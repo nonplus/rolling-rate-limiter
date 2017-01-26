@@ -61,6 +61,7 @@ function RateLimiter (options) {
 
         var result, remaining;
         if (tooManyInInterval || timeSinceLastRequest < minDifference) {
+          redis.zrem(key, now);
           result = Math.min(userSet[0] - now + interval, minDifference ? minDifference - timeSinceLastRequest : Infinity);
           result = Math.floor(result / 1000); // convert to miliseconds for user readability.
           remaining = -1;
